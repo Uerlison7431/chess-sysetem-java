@@ -32,7 +32,7 @@ public class UI {
 
         //metod para limpar manter/limpar a tela dpois de uma jogada
     public static void clearScreen(){
-            System.out.println("\033[H\033[@J");
+            System.out.println("\033[H\033[2J");
                 System.out.flush();
         }
 
@@ -48,11 +48,25 @@ public class UI {
         }
     }
     
+    //Metodo que imprime o tabuleiro com as peças
     public static void printBoard(ChessPiece[][] pieces){
         for (int i=0; i<pieces.length; i++){
             System.out.print((8-i) + " ");
             for(int j=0; j<pieces.length; j++){
-                printPiece(pieces[i][j]);
+                printPiece(pieces[i][j], false);
+            }
+
+            System.out.println();
+        }
+
+        System.out.println("  a b c d e f g h");
+    }
+    //Metodo que imprime o tabuleiro com as peças e as jogadas possives
+    public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves){
+        for (int i=0; i<pieces.length; i++){
+            System.out.print((8-i) + " ");
+            for(int j=0; j<pieces.length; j++){
+                printPiece(pieces[i][j], possibleMoves[i][j]);
             }
 
             System.out.println();
@@ -62,9 +76,12 @@ public class UI {
     }
 
     //Metodo para imprimir uma peça
-    private static void printPiece(ChessPiece piece) {
-	   	if (piece == null) {
-            System.out.print("-");
+    private static void printPiece(ChessPiece piece, boolean backGround) {
+	   	if(backGround){
+            System.out.print(ANSI_BLUE_BACKGROUND);
+        }
+        if (piece == null) {
+            System.out.print("-" + ANSI_RESET);
         }
         else {
             if (piece.getColor() == Color.WHITE) {

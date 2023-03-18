@@ -31,6 +31,13 @@ public class ChessMatch {
         return mat;
     }
 
+    //Metodo que indica no tabuleiro as jogadas possiveis ao jogador
+    public boolean[][] possibleMoves(ChessPosition sourPosition){
+        Position position = sourPosition.toPosition();
+        validateSourcePosition(position);
+        return board.piece(position).possibleMoves();
+    }
+
    //Metodo para fazer um movimento de peça,da posiçao de origem até o destino informado
     public ChessPiece performChessMove(ChessPosition sourcePosuPosition, ChessPosition targPosition){
         Position source = sourcePosuPosition.toPosition();
