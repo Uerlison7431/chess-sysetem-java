@@ -1,6 +1,6 @@
 package boardgame.chess;
 
 public enum Color {
-    Black,
+    BLACK,
     WHITE;
 }
