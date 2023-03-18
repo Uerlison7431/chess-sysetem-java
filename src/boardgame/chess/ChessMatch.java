@@ -38,7 +38,7 @@ public class ChessMatch {
         return board.piece(position).possibleMoves();
     }
 
-   //Metodo para fazer um movimento de peça,da posiçao de origem até o destino informado
+   //(SobreCarga)Metodo para fazer um movimento de peça,da posiçao de origem até o destino informado.
     public ChessPiece performChessMove(ChessPosition sourcePosuPosition, ChessPosition targPosition){
         Position source = sourcePosuPosition.toPosition();
         Position target = targPosition.toPosition();
