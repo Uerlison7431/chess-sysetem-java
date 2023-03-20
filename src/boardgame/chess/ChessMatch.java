@@ -20,6 +20,7 @@ public class ChessMatch {
     private Color currentPLayer;
     private Board board;
     private boolean check;
+    private boolean checkMate;
     
     private List<Piece> piecesOnTheBoard = new ArrayList<>();
     private List<Piece> capturedPieces = new ArrayList<>();
@@ -43,6 +44,10 @@ public class ChessMatch {
 
     public boolean getCheck(){
         return check;
+    }
+
+    public boolean getCheckMate(){
+        return checkMate;
     }
 
     public ChessPiece[][] getPieces(){
@@ -79,7 +84,13 @@ public class ChessMatch {
         //Comando que verifica se o oponnente ficará em check depois da jogada.
         check = (testCheck(opponent(currentPLayer))) ? true : false;
 
-        nextTurn();
+        if(testCheckMate(opponent(currentPLayer))){
+            checkMate = true;
+        }else{
+            nextTurn();
+        }
+
+        
         return (ChessPiece)capturedPiece;
     }
 
@@ -164,6 +175,35 @@ public class ChessMatch {
             }
         }
         return false;
+    }
+
+    //Metodo que teste o checkMate
+    private boolean testCheckMate(Color color){
+        //linha que testa se o King está em check
+        if(!testCheck(color)){
+            return false;
+        }
+        List<Piece> list = piecesOnTheBoard.stream().filter(x -> ((ChessPiece)x).getColor() == color).collect(Collectors.toList());
+        for(Piece p : list){
+            boolean[][] mat = p.possibleMoves();
+            for(int i=0; i<board.getRows(); i++){
+                for(int j=0; j<board.getRows(); j++){
+                    if(mat[i][j]){
+                        Position source = ((ChessPiece)p).getChessPosition().toPosition();
+                        Position target = new Position(i, j);
+                        Piece capturedPiece = makeMove(source, target);
+                        boolean testCheck = testCheck(color);
+                        //Comando que desfaz o movimento dpois que testa
+                        undoMovie(source, target, capturedPiece);
+                        if(!testCheck){
+                            return false;
+                        }
+
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     //Metodo para iniciar e colocar as peças no tabuleiro
