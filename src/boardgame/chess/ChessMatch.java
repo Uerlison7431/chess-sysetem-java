@@ -12,12 +12,25 @@ import boardgame.chess.pieces.Rook;
 
 public class ChessMatch {
     
+    private int turn;
+    private Color currentPLayer;
     private Board board;
 
+    //Construtor
     public ChessMatch(){
         board = new Board(8, 8);
+        turn =1;
+        currentPLayer = Color.WHITE;
         //metodo de inicio da partida
         initialSetup();
+    }
+
+    public int getTurn(){
+        return turn;
+    }
+
+    public Color getcurrentPlayer(){
+        return currentPLayer;
     }
 
     public ChessPiece[][] getPieces(){
@@ -45,6 +58,7 @@ public class ChessMatch {
         validateSourcePosition(source);
         validateTargetPosition(source, target);
         Piece capturedPiece = makeMove(source, target);
+        nextTurn();
         return (ChessPiece)capturedPiece;
     }
 
@@ -58,6 +72,9 @@ public class ChessMatch {
     //Metodo de validação de posição de origem para movimento da peça
     private void validateSourcePosition(Position position){
         if(!board.thereIsAPiece(position)){
+            throw new ChessException("There is no piece on source position");
+        }
+        if(currentPLayer != ((ChessPiece) board.piece(position)).getColor()){
             throw new ChessException("There is no piece on source position");
         }
         if(!board.piece(position).isThereAnyPossibleMove()){
@@ -74,6 +91,12 @@ public class ChessMatch {
     
     private void placeNewPiece(char column, int row, ChessPiece piece){
         board.placePiece(piece, new ChessPosition(column, row).toPosition());
+    }
+
+    //Metodo que faz a mudança de turno
+    private void nextTurn(){
+        turn++;
+        currentPLayer = (currentPLayer == Color.WHITE) ? Color.BLACK : Color.WHITE;
     }
 
     //Metodo para iniciar e colocar as peças no tabuleiro

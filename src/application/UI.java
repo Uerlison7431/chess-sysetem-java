@@ -3,6 +3,7 @@ package application;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import boardgame.chess.ChessMatch;
 import boardgame.chess.ChessPiece;
 import boardgame.chess.ChessPosition;
 import boardgame.chess.Color;
@@ -46,6 +47,14 @@ public class UI {
         catch (RuntimeException e){
             throw new InputMismatchException("Error reding ChessPosition. Valid values are from a1 to h8");
         }
+    }
+
+    //Metodo que mostra o turno e o jogador da rodada
+    public static void printMatch(ChessMatch chessMatch){
+        printBoard(chessMatch.getPieces());
+        System.out.println();
+        System.out.println("Turn : " + chessMatch.getTurn());
+        System.out.println("Waiting player: " + chessMatch.getcurrentPlayer());
     }
     
     //Metodo que imprime o tabuleiro com as peças
