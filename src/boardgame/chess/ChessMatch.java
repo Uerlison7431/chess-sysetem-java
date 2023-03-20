@@ -96,7 +96,8 @@ public class ChessMatch {
 
     //Metodo que realiza o movimento (Jogada) de remoção e alocação da peça
     private Piece makeMove(Position source, Position target){
-        Piece p = board.removePiece(source);
+        ChessPiece p = (ChessPiece)board.removePiece(source);
+        p.increaseMoveCount();
         Piece capturedPiece = board.removePiece(target);
         board.placePiece(p, target);
 
@@ -108,7 +109,8 @@ public class ChessMatch {
     }
     //Metodo que desfaz a jogada retornando as peças a posilçao de origen
     private void undoMovie(Position source, Position target, Piece capturedPiece){
-        Piece p = board.removePiece(target);
+        ChessPiece p = (ChessPiece)board.removePiece(target);
+        p.decreaseMoveCount();
         board.placePiece(p, source);
         //Comando que verifica se teve alguma peças capturada na jogada, devolvendo-a a sua origen
         if(capturedPiece != null){
